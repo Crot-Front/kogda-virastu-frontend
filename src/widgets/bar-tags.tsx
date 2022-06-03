@@ -17,10 +17,14 @@ type TLists = {
 };
 
 const Lists = styled.ul<TLists>`
+    margin: 0;
     display: flex;
     box-sizing:border-box;
     flex-wrap:wrap;
+    /*
     flex-direction: ${({ rowReverse }) => rowReverse && 'row-reverse'};
+    */
+
     gap: 4px 24px;
     //width:526px;
     white-space: pre-line;
@@ -29,6 +33,7 @@ const Lists = styled.ul<TLists>`
         max-width:453px;
         ${({ isHasImage }) => isHasImage && 'margin-left: -60px'}
      }
+     
      @media screen and (max-width:600px) {
         max-width:352px;
         margin:0;

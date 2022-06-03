@@ -53,7 +53,7 @@ module.exports = {
       'namedComponents': 'arrow-function',
       'unnamedComponents': 'arrow-function'
     }],
-    'camelcase': ["error", {allow: ["^image_"]}],
+    'camelcase': ["error", { allow: ["^image_"] }],
     'prefer-arrow/prefer-arrow-functions':
       [
         'warn',
@@ -64,6 +64,7 @@ module.exports = {
         },
       ],
     'default-param-last': 'off',
+    'linebreak-style': ["error", "windows"]
   },
 }
-;
+  ;

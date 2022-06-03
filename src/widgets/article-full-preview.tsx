@@ -10,14 +10,9 @@ import { Divider } from '../ui-lib';
 import { getPropOnCondition } from '../services/helpers';
 
 const ArticleCardContainer = styled.div`
-    width: 700px;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-
-    @media screen and (max-width: 1050px) {
-        width: 453px;
-    }
 
     @media screen and (max-width: 600px) {
         width: 280px;
@@ -36,7 +31,10 @@ const ArticleName = styled.h2`
     line-height: ${({ theme: { secondLevelHeading: { height } } }) => `${height}px`} ;
     font-weight: ${({ theme: { secondLevelHeading: { weight } } }) => weight};
     color: ${({ theme: { primaryText } }) => primaryText};
-    word-break:break-all;
+    /* word-break:break-all; */
+    margin: 0;
+    margin-top: 16px;
+
  @media screen and (max-width: 768px) {
         font-size: ${({ theme: { secondLevelHeadingMobile: { size } } }) => `${size}px`} ;
         font-family: ${({ theme: { secondLevelHeadingMobile: { family } } }) => family};
@@ -55,6 +53,8 @@ type TElementWithImage = {
 
 const BarTagsWrapper = styled.div<TElementWithImage>`
   width:100%;
+  margin-top: 16px;
+  margin-bottom: 16px;
   @media screen and (max-width:600px) {
     ${({ image }) => getPropOnCondition(!!image, 'grid-row: 3/4', 'grid-row: 4/5 ')};
   }
@@ -62,9 +62,9 @@ const BarTagsWrapper = styled.div<TElementWithImage>`
 `;
 
 const ContentContainer = styled.div<TElementWithImage>`
-    display: grid;
-    grid-template-columns: 1fr 6fr;
-    grid-gap: 16px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 32px;
     .link {
         font-size: ${({ theme: { text18Sans: { size } } }) => `${size}px`} ;
         font-family: ${({ theme: { text18Sans: { family } } }) => family};
@@ -92,8 +92,11 @@ const ContentContainer = styled.div<TElementWithImage>`
 `;
 
 const ArticleImage = styled.img`
-width: 159px;
-height: 85px;
+object-fit: cover;
+width: auto;
+max-width: 358px;
+height: auto;
+margin-top: 16px;
 @media screen and (max-width: 320px) {
     width: 280px;
     height: 150px;
@@ -107,6 +110,7 @@ line-height: ${({ theme: { text18Sans: { height } } }) => `${height}px`};
 font-weight: ${({ theme: { text18Sans: { weight } } }) => weight};
 color: ${({ theme: { primaryText } }) => primaryText};
 overflow: hidden;
+margin-top: 16px;
 text-overflow: ellipsis;
 display: -moz-box;
 -moz-box-orient: vertical;
@@ -147,17 +151,17 @@ const ArticleFullPreview: FC<TArticleFullPreview> = ({ article, onLikeClick }) =
       <ArticleName>{article.title}</ArticleName>
       {article.link && <ArticleImage src={article.link} />}
       <Article image={article.link}>{article.body}</Article>
-      <Link className='link' to={`/article/${article.slug}`}>
-        <FormattedMessage id='articleEnter' />
-      </Link>
       <BarTagsWrapper image={article.link}>
         <BarTags
           isHasImage={!!article.link}
           rowReverse
           tagList={article.tagList} />
       </BarTagsWrapper>
+      <Link className='link' to={`/article/${article.slug}`}>
+        <FormattedMessage id='articleEnter' />
+      </Link>
     </ContentContainer>
-    <Divider distance={0} />
+    {/* <Divider distance={0} /> */}
   </ArticleCardContainer>
 );
 

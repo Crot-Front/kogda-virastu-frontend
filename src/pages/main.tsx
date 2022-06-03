@@ -13,6 +13,7 @@ import {
 } from '../thunks';
 import { FeedRibbon, Slider } from '../widgets';
 import { desktopBreakpoint, mobileViewThreshold, tabletBreakpoint } from '../constants';
+import FeedFilter from '../widgets/feed-filter';
 
 const desktopToTabletGapStep = (80 - 40) / (desktopBreakpoint - tabletBreakpoint);
 const tabletToMobileGapStep = (40 - 20) / (tabletBreakpoint - mobileViewThreshold);
@@ -34,6 +35,14 @@ const MainContainer = styled.div`
     max-width:1140px;
     position: relative;
     z-index: 10;
+
+    @media screen and (max-width: 1300px) {
+      max-width: 955px;
+    }
+
+    @media screen and (max-width: 1025px) {
+      max-width: 720px;
+    }
 
     @media screen and (max-width:${tabletBreakpoint}px) {
       padding: 0 24px;
@@ -57,6 +66,8 @@ const MainContainer = styled.div`
 `;
 const LeftColumn = styled.div`
 overflow: hidden;
+position: relative;
+width: 100%;
 `;
 
 const RightColumn = styled.aside`
@@ -97,6 +108,7 @@ const Main : FC = () => {
     <MainSection>
       <MainContainer>
         <LeftColumn>
+          <FeedFilter />
           <FeedRibbon />
         </LeftColumn>
         <RightColumn>

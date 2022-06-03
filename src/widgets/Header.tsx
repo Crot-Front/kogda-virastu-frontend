@@ -169,7 +169,10 @@ const Container = styled.div`
   @media screen and (max-width:1023px) {
     max-width: 720px;
   }
-  @media screen and (max-width:720px) {
+  @media screen and (max-width:750px) {
+    max-width: 448px;
+  }
+  @media screen and (max-width:640px) {
     max-width: 280px;
   }
 `;
