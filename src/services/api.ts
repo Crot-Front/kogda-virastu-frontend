@@ -288,6 +288,14 @@ export const fetchArticle : IFetchArticle = (slug: string) : AxiosPromise<TAPIAr
   return blogAPI(injectBearerToken(requestConfig));
 };
 
+export const fetchPopularArticles : IFetchArticles = () : AxiosPromise<TAPIArticles> => {
+  const requestConfig : AxiosRequestConfig = {
+    url: `${ARTICLES_ROUTE}/top`,
+    method: 'get',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
 export const publishArticle : IPatchArticle = (
   slug: string,
   articleData: TAPIPatchArticleData,
