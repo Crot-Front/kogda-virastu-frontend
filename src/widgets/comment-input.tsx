@@ -1,7 +1,7 @@
 import React, { FC, FormEventHandler, ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 
-import { createCommentThunk } from '../thunks';
+import { createCommentThunk, getCommentsThunk } from '../thunks';
 import { TCommentInputProps } from '../types/widgets.types';
 import { PublishCommentButton } from '../ui-lib/buttons';
 import { FieldTextComment } from '../ui-lib';
@@ -50,6 +50,7 @@ const CommentInput: FC<TCommentInputProps> = ({ slug }) => {
   const handleCommentSubmit : FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
     dispatch(createCommentThunk(slug));
+    dispatch(getCommentsThunk(slug));
   };
 
   if (username) {
