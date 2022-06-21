@@ -16,7 +16,6 @@ import {
   getArticleThunk,
   declineArticleThunk,
   setPendingArticleThunk,
-  getPendingFeedThunk,
 } from '../thunks';
 import {
   DeletePostButton,
@@ -147,15 +146,6 @@ const ArticleActions: FC<TArticleActionsProps> = ({ onClickEdit, onClickDelete }
   </ArticleActionsContainer>
 );
 
-// const ModerationArticleActions: FC<TModerationArticleActionsProps> = ({
-//   onClickPublish, onClickDecline,
-// }) => (
-//   <ArticleActionsContainer>
-//     <PublishButton onClick={onClickPublish} />
-//     <DeclineButton onClick={onClickDecline} />
-//   </ArticleActionsContainer>
-// );
-
 const PublishedArticleActions: FC<TPublishedArticleActionsProps> = ({ onClickSetPending }) => (
   <ArticleActionsContainer>
     <PublishedButton />
@@ -200,7 +190,6 @@ const Article: FC<TArticleProps> = ({ slug }) => {
   const onClickDecline = () => {
     dispatch(declineArticleThunk(slug));
     navigate('/');
-    // dispatch(getPendingFeedThunk());//доработать переход на таб модерации после отклонения статьи
   };
 
   const onClickSetPending = () => {
