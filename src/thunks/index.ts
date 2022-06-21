@@ -28,8 +28,10 @@ import getInviteThunk from './get-invite-thunk';
 import patchUserRolesThunk from './patch-user-roles-thunk';
 import avatarImageUploadThunk from './avatar-image-upload';
 import postImageUploadThunk from './post-image-upload';
+import getPopularArticlesThunk from './get-popular-articles-thunk';
 
 export {
+  getPopularArticlesThunk,
   createCommentThunk,
   getArticleThunk,
   getCommentsThunk,

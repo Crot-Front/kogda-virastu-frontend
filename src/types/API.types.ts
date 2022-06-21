@@ -16,7 +16,7 @@ import {
   TAPIUsers,
   TAPIRolesData,
   TAPIUploadImage,
-  TFile
+  TFile,
 } from '../services/api.types';
 
 export interface IRegisterUser {

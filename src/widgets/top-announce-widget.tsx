@@ -48,14 +48,14 @@ const ItemWrapper = styled.li`
 `;
 
 const TopAnnounceWidget : FC<TTopAnnounceWidgetProps> = ({ caption }) => {
-  const topArticles = useSelector((state) => state.view.topFeed) ?? [];
+  const popularArticles = useSelector((state) => state.all.popularArticles);
   return (
     <TopAnnounce>
       <HeaderThreeText paddingCSS='padding-bottom: 24px;'>
         {caption}
       </HeaderThreeText>
       <TopContainer>
-        {topArticles.map((article: TArticle, index) => {
+        {popularArticles?.map((article: TArticle, index) => {
           const {
             author: {
               username,

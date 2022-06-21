@@ -10,7 +10,7 @@ import { AppThunk } from '../store/store.types';
 import { makeErrorObject, makeTopFeed } from '../services/helpers';
 import { TAPIError } from '../services/api.types';
 
-const getPopularArticlesThunk: AppThunk = (qty = 7) => async (dispatch) => {
+const getPopularArticlesThunk: AppThunk = (qty = 5) => async (dispatch) => {
   try {
     dispatch(popularPostsRequested());
     const { data: { articles } } = await fetchPopularArticles();
