@@ -6,7 +6,7 @@ import { compareCreatedDatesForTop, makeTopFeed } from '../services/helpers';
 
 const setNewPostsThunk: AppThunk = (qty = 5) => (dispatch, getState) => {
   const articles = getState().all.articles ?? [];
-  dispatch(setTopFeed(makeTopFeed(articles, compareCreatedDatesForTop, qty as number)));
+  dispatch(setTopFeed(makeTopFeed(articles, qty as number, compareCreatedDatesForTop)));
 };
 
 export default setNewPostsThunk;

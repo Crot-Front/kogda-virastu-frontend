@@ -9,7 +9,7 @@ import TopAnnounceWidget from '../widgets/top-announce-widget';
 import PopularTags from '../widgets/popular-tags';
 import { useSelector, useDispatch } from '../services/hooks';
 import {
-  setTopLikedThunk, setNewPostsThunk, getPublicFeedThunk,
+  getPopularArticlesThunk, setNewPostsThunk, getPublicFeedThunk,
 } from '../thunks';
 import { FeedRibbon, Slider, Preloader } from '../widgets';
 import { desktopBreakpoint, mobileViewThreshold, tabletBreakpoint } from '../constants';
@@ -103,7 +103,7 @@ const Main: FC = () => {
 
   useEffect(() => {
     if (articles && articles.length > 0) {
-      dispatch(setTopLikedThunk());
+      dispatch(getPopularArticlesThunk());
     }
   }, [dispatch, articles]);
 

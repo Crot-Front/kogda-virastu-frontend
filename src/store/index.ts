@@ -46,6 +46,7 @@ import {
   clearAll,
   setAllThemes,
   setAllVocabularies,
+  setPopularArticles,
 } from './allSlice';
 
 import { setUser, clearUser, setInviteCode } from './userSlice';
@@ -187,6 +188,9 @@ import {
   uploadFetchRequested,
   uploadFetchSucceeded,
   uploadFetchFailed,
+  popularPostsRequested,
+  popularPostsRequestSucceeded,
+  popularPostsRequestFailed,
 } from './apiSlice';
 
 import {
@@ -203,6 +207,10 @@ import {
 import { setAllUsers } from './adminSlice';
 
 export {
+  setPopularArticles,
+  popularPostsRequested,
+  popularPostsRequestSucceeded,
+  popularPostsRequestFailed,
   setTheme,
   setLanguage,
   setAllThemes,

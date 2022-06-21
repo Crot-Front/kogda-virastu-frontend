@@ -10,6 +10,8 @@ type TAPIState = {
   isUserLoggingIn: boolean,
   isUserPatching: boolean,
   isPublicFeedFetching: boolean,
+  isPopularPostsRequested: boolean,
+  isPopularPostsSucceeded: boolean,
   isArticleFetching: boolean,
   isArticleNotFound: boolean,
   isPrivateFeedFetching: boolean,
@@ -54,6 +56,8 @@ const initialState : TAPIState = {
   isUserFetching: false,
   isUserPatching: false,
   isPublicFeedFetching: false,
+  isPopularPostsRequested: false,
+  isPopularPostsSucceeded: false,
   isArticleFetching: false,
   isArticleNotFound: false,
   isPrivateFeedFetching: false,
@@ -179,6 +183,18 @@ const apiSlice = createSlice({
     }),
     clearArticleFetchNotFound: (state) => ({
       ...state, isArticleNotFound: false,
+    }),
+    popularPostsRequested: (state) => ({
+      ...state, isPopularPostsRequested: true, isPopularPostsSucceeded: false,
+    }),
+    popularPostsRequestSucceeded: (state) => ({
+      ...state, isPopularPostsRequested: false, isPopularPostsSucceeded: true,
+    }),
+    popularPostsRequestFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state,
+      isPopularPostsRequested: false,
+      isPopularPostsSucceeded: false,
+      errorObject: action.payload,
     }),
     privateFeedRequested: (state) => ({
       ...state, isPrivateFeedFetching: true,
@@ -455,6 +471,9 @@ export const {
   publicFeedRequested,
   publicFeedSucceeded,
   publicFeedFailed,
+  popularPostsRequested,
+  popularPostsRequestSucceeded,
+  popularPostsRequestFailed,
   articleFetchRequested,
   articleFetchSucceeded,
   articleFetchFailed,
