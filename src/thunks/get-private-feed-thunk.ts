@@ -6,11 +6,13 @@ import {
   privateFeedRequested,
   privateFeedSucceeded,
   setFeedCount,
+  setFeedType,
   setViewFeed,
 } from '../store';
 import { AppThunk } from '../store/store.types';
 import { makeErrorObject } from '../services/helpers';
 import { TAPIError, TAPIParamsObject } from '../services/api.types';
+import { FeedTypes } from '../types/types';
 
 const getPrivateFeedThunk: AppThunk = (
   params: TAPIParamsObject,
@@ -22,9 +24,11 @@ const getPrivateFeedThunk: AppThunk = (
     const
       { data: { articles, articlesCount } } = await fetchPrivateFeed(params);
     batch(() => {
-      dispatch(setViewFeed(articles));
+      const publishedArticles = articles.filter((article) => article.state === 'published');
+      dispatch(setViewFeed(publishedArticles));
       dispatch(setFeedCount(articlesCount));
       dispatch(privateFeedSucceeded());
+      dispatch(setFeedType(FeedTypes.private));
     });
   } catch (error) {
     dispatch(privateFeedFailed(makeErrorObject(error as AxiosError<TAPIError>)));

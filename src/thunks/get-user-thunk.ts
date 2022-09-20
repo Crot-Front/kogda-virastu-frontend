@@ -17,14 +17,14 @@ const getUserProfileThunk: AppThunk = () => async (dispatch) => {
     const {
       data: {
         user: {
-          username, email, bio, image, token, nickname,
+          username, email, roles, bio, image, token, nickname,
         },
       },
     } = await fetchCurrentUser();
     jwt.set(token);
     batch(() => {
       dispatch(setUser({
-        username, email, bio, image, nickname,
+        username, email, roles, bio, image, nickname,
       }));
       dispatch(userFetchSucceeded());
       dispatch(onLogin());

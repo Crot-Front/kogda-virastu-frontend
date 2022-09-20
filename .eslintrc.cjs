@@ -36,6 +36,7 @@ module.exports = {
   },
   ignorePatterns: ['*.cjs', 'src/reportWebVitals.js', 'src/reportWebVitals.ts'],
   rules: {
+    "linebreak-style": 0, // убрать
     'no-underscore-dangle': ['error', {
       allow: ['_id', '__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'],
       enforceInMethodNames: true,
@@ -52,7 +53,7 @@ module.exports = {
       'namedComponents': 'arrow-function',
       'unnamedComponents': 'arrow-function'
     }],
-    'camelcase': ["error", {allow: ["^image_"]}],
+    'camelcase': ["error", { allow: ["^image_"] }],
     'prefer-arrow/prefer-arrow-functions':
       [
         'warn',
@@ -65,4 +66,4 @@ module.exports = {
     'default-param-last': 'off',
   },
 }
-;
+  ;

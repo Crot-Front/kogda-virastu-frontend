@@ -9,10 +9,11 @@ import TopAnnounceWidget from '../widgets/top-announce-widget';
 import PopularTags from '../widgets/popular-tags';
 import { useSelector, useDispatch } from '../services/hooks';
 import {
-  setTopLikedThunk, setNewPostsThunk, getPublicFeedThunk,
+  getPopularArticlesThunk, setNewPostsThunk, getPublicFeedThunk,
 } from '../thunks';
-import { FeedRibbon, Slider } from '../widgets';
+import { FeedRibbon, Slider, Preloader } from '../widgets';
 import { desktopBreakpoint, mobileViewThreshold, tabletBreakpoint } from '../constants';
+import FeedFilter from '../widgets/feed-filter';
 
 const desktopToTabletGapStep = (80 - 40) / (desktopBreakpoint - tabletBreakpoint);
 const tabletToMobileGapStep = (40 - 20) / (tabletBreakpoint - mobileViewThreshold);
@@ -35,11 +36,19 @@ const MainContainer = styled.div`
     position: relative;
     z-index: 10;
 
+    @media screen and (max-width: 1300px) {
+      max-width: 955px;
+    }
+
+    @media screen and (max-width: 1025px) {
+      max-width: 720px;
+    }
+
     @media screen and (max-width:${tabletBreakpoint}px) {
       padding: 0 24px;
       gap: 0 calc(40px - ${tabletToMobileGapStep} * (${tabletBreakpoint}px - 100vw)) ;
       width: calc(720px - ${tabletToMobileMainWidthStop} * (${tabletBreakpoint}px - 100vw));
-  }
+    }
   @media screen and (max-width: 765px) {
     flex-direction: column-reverse;
     gap: 0;
@@ -57,6 +66,8 @@ const MainContainer = styled.div`
 `;
 const LeftColumn = styled.div`
 overflow: hidden;
+position: relative;
+width: 100%;
 `;
 
 const RightColumn = styled.aside`
@@ -77,10 +88,12 @@ const RightColumn = styled.aside`
     }
   }
 `;
-const Main : FC = () => {
+const Main: FC = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
   const { articles } = useSelector((state) => state.all);
+  const { isLoggedIn } = useSelector((state) => state.system);
+
   useEffect(() => {
     batch(() => {
       dispatch(getPublicFeedThunk());
@@ -90,13 +103,20 @@ const Main : FC = () => {
 
   useEffect(() => {
     if (articles && articles.length > 0) {
-      dispatch(setTopLikedThunk());
+      dispatch(getPopularArticlesThunk());
     }
   }, [dispatch, articles]);
+
+  if (!articles) {
+    return (
+      <Preloader />
+    );
+  }
   return (
     <MainSection>
       <MainContainer>
         <LeftColumn>
+          {isLoggedIn && <FeedFilter />}
           <FeedRibbon />
         </LeftColumn>
         <RightColumn>

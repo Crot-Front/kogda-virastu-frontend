@@ -17,6 +17,7 @@ const registerThunk: AppThunk = () => async (dispatch, getState) => {
   const emailReg = reg.email ?? '';
   const passwordReg = reg.password ?? '';
   const nicknameReg = reg.nickname ?? '';
+  const inviteReg = reg.invite ?? '';
   dispatch(userRegistrationRequested());
   try {
     const {
@@ -25,7 +26,7 @@ const registerThunk: AppThunk = () => async (dispatch, getState) => {
           username, email, token, bio = '', image = '', nickname = '',
         },
       },
-    } = await registerUser(usernameReg, emailReg, passwordReg, nicknameReg);
+    } = await registerUser(usernameReg, emailReg, passwordReg, nicknameReg, inviteReg);
     jwt.set(token);
     batch(() => {
       dispatch(setUser({

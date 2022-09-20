@@ -24,6 +24,7 @@ export type TArticle = {
   favorited: boolean;
   favoritesCount: number;
   slug: string;
+  state: string;
   tagList: TTags;
   title: string;
   updatedAt: string;

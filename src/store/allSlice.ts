@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TArticles, TTags } from '../types/types';
+import { TArticles, TPopularTags } from '../types/types';
 import { TThemes } from '../types/styles.types';
 import themes from '../themes';
 import { TVocabularies } from '../types/vocabularies.types';
@@ -7,8 +7,9 @@ import vocabularies from '../vocabularies';
 
 type TAllState = {
   articles: TArticles | null;
+  popularArticles: TArticles | null;
   articlesCount: number;
-  tags: TTags | null;
+  tags: TPopularTags | null;
   themes: TThemes,
   themesNames: Array<string>,
   vocabularies: TVocabularies,
@@ -16,6 +17,7 @@ type TAllState = {
 };
 const initialState : TAllState = {
   articles: null,
+  popularArticles: null,
   articlesCount: 0,
   tags: null,
   themes,
@@ -31,10 +33,13 @@ const allSlice = createSlice({
     setAllArticles: (state, action: PayloadAction<TArticles>) => ({
       ...state, articles: action.payload,
     }),
+    setPopularArticles: (state, action: PayloadAction<TArticles>) => ({
+      ...state, popularArticles: action.payload,
+    }),
     setAllArticlesCount: (state, action: PayloadAction<number>) => ({
       ...state, articlesCount: action.payload,
     }),
-    setAllTags: (state, action: PayloadAction<TTags>) => ({
+    setPopularTags: (state, action: PayloadAction<TPopularTags>) => ({
       ...state, tags: action.payload,
     }),
     clearArticles: (state) => ({ ...state, articles: null }),
@@ -52,8 +57,9 @@ const allSlice = createSlice({
 const allReducer = allSlice.reducer;
 export const {
   setAllArticles,
+  setPopularArticles,
   setAllArticlesCount,
-  setAllTags,
+  setPopularTags,
   clearArticles,
   clearTags,
   clearAll,

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import {
@@ -16,6 +16,7 @@ import {
   LogoutIcon,
   HomeIcon,
   LoginIcon,
+  CheckIcon,
 } from './icons';
 import { getPropOnCondition, setColor } from '../services/helpers';
 import useMouseEvents from '../services/hooks/use-mouse-events';
@@ -29,12 +30,13 @@ type TBasicButtonProps = {
 };
 
 export const BasicNormalButton = styled.button<TBasicButtonProps>`
- // width: 100%;
+  // width: 100%;
   padding: 8px 16px;
   border-radius: 4px;
   border-width: 0;
   box-sizing: border-box;
   display: flex;
+  cursor: pointer;
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
@@ -58,6 +60,7 @@ const BasicInvertedButton = styled.button<TBasicButtonProps>`
   border-width: 0;
   box-sizing: border-box;
   display: flex;
+  cursor: pointer;
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
@@ -132,7 +135,6 @@ export const DeletePostButton : FC<TButtonProps> = ({ onClick, disabled = false 
       onMouseUp,
     },
   } = useMouseEvents({});
-
   return (
     <BasicInvertedButton
       colorScheme='red'
@@ -153,6 +155,53 @@ export const DeletePostButton : FC<TButtonProps> = ({ onClick, disabled = false 
     </BasicInvertedButton>
   );
 };
+
+const PublishButton : FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <BasicNormalButton colorScheme='blue' disabled={disabled} onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='publish' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
+const DeclineButton : FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <BasicNormalButton colorScheme='red' disabled={disabled} onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='decline' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
+type TModerationArticleActionsProps = {
+  onClickPublish: MouseEventHandler<HTMLButtonElement>;
+  onClickDecline: MouseEventHandler<HTMLButtonElement>;
+};
+
+export const ModerationArticleButtonActions: FC<TModerationArticleActionsProps> = ({
+  onClickPublish, onClickDecline,
+}) => (
+  <>
+    <PublishButton onClick={onClickPublish} />
+    <DeclineButton onClick={onClickDecline} />
+  </>
+);
+
+export const PublishedButton : FC<TButtonProps> = ({ onClick, disabled = true }) => (
+  <BasicNormalButton colorScheme='blue' disabled={disabled} onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='published' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
+export const SetPendingButton : FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <BasicNormalButton colorScheme='red' disabled={disabled} onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='setPending' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
 export const OpenMenuButton: FC<TAvatarButtonProps> = ({
   onClick,
   disabled = false,
@@ -282,6 +331,12 @@ export const PublishCommentButton : FC<Omit<TButtonProps, 'onClick'>> = ({ disab
   </BasicNormalButton>
 );
 
+export const GenerateCodeButton : FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <BasicNormalButton colorScheme='blue' disabled={disabled} onClick={onClick}>
+    <FormattedMessage id='generateСode' />
+  </BasicNormalButton>
+);
+
 export const MenuSettingsButton : FC<TButtonProps> = ({ onClick, disabled = false }) => {
   const theme = useTheme();
   return (
@@ -294,6 +349,23 @@ export const MenuSettingsButton : FC<TButtonProps> = ({ onClick, disabled = fals
         distance={iconDistance} />
       <RegularText size='large' weight={500}>
         <FormattedMessage id='settings' />
+      </RegularText>
+    </MenuButton>
+  );
+};
+
+export const MenuAdminButton : FC<TButtonProps> = ({ onClick, disabled = false }) => {
+  const theme = useTheme();
+  return (
+    <MenuButton
+      colorScheme='menu'
+      disabled={disabled}
+      onClick={onClick}>
+      <CheckIcon
+        color={theme.button.menu.font}
+        distance={iconDistance} />
+      <RegularText size='large' weight={500}>
+        <FormattedMessage id='adminPanel' />
       </RegularText>
     </MenuButton>
   );

@@ -57,7 +57,8 @@ const TextAreaField = ({
         onBlur={onBlur}
         minHeight={minHeight}
         rows={1}
-        isHasBorder={isHasBorder ?? true} />
+        isHasBorder={isHasBorder ?? true}
+        maxLength={250} />
     </LabelStyle>
     {error && <ErrorText errorText={errorText} />}
   </ContainerTextArea>

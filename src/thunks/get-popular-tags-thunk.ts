@@ -1,8 +1,8 @@
 import { batch } from 'react-redux';
 import { AxiosError } from 'axios';
-import { fetchTags } from '../services/api';
+import { fetchPopularTags } from '../services/api';
 import {
-  setAllTags,
+  setPopularTags,
   tagsFetchFailed,
   tagsFetchRequested,
   tagsFetchSucceeded,
@@ -11,13 +11,12 @@ import { AppThunk } from '../store/store.types';
 import { TAPIError } from '../services/api.types';
 import { makeErrorObject } from '../services/helpers';
 
-const getAllTagsThunk : AppThunk = () => async (dispatch) => {
+const getPopularTagsThunk : AppThunk = () => async (dispatch) => {
   try {
     dispatch(tagsFetchRequested());
-    const { data: { tags } } = await fetchTags();
-    dispatch(setAllTags(tags));
+    const { data: { tags } } = await fetchPopularTags();
     batch(() => {
-      dispatch(setAllTags(tags));
+      dispatch(setPopularTags(tags));
       dispatch(tagsFetchSucceeded());
     });
   } catch (error) {
@@ -25,4 +24,4 @@ const getAllTagsThunk : AppThunk = () => async (dispatch) => {
   }
 };
 
-export default getAllTagsThunk;
+export default getPopularTagsThunk;

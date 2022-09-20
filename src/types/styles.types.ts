@@ -28,6 +28,7 @@ export type TTheme = {
     borderActive: string;
     disabledInput: string;
     errorColor: string;
+    secondaryText: string,
   },
   button: {
     [key: string]: TColorSet,
@@ -71,7 +72,7 @@ export type TFontProperties = {
 };
 
 export type TButtonProps = {
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
 };
 
@@ -137,7 +138,7 @@ export type TDividerProps = {
   distance: number;
 };
 
-export type TInputFieldType = 'text' | 'email' | 'password' | 'url';
+export type TInputFieldType = 'text' | 'email' | 'password' | 'url' | 'file';
 
 export type TFieldInput = {
   value: string;
@@ -145,7 +146,14 @@ export type TFieldInput = {
   error?: boolean;
   disabled?: boolean;
   errorText?: string;
+  confirmPassword?: string | null;
+
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  onIconClick?: MouseEventHandler;
+  onChangeUpload?: ChangeEventHandler<HTMLInputElement>;
+  imageRef?: {
+    current: any
+  };
 };

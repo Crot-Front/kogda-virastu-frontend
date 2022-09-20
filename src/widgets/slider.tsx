@@ -8,6 +8,8 @@ import { useSelector } from '../services/hooks';
 import BriefPostAnnounceWidget from './brief-post-announce-widget';
 import { TArticle } from '../types/types';
 import { Divider, HeaderThreeText } from '../ui-lib';
+import ArrowRight from '../assets/images/icons/arrow-right-icon.svg';
+import { mainBgColor } from '../constants/colors';
 
 const SlideContainer = styled.div`
 @keyframes show{
@@ -36,6 +38,19 @@ width: 100%;
 @media screen and (min-width: 768px) {
     display: none;
     }
+`;
+const SliderArrowRight = styled.button`
+  cursor: pointer;
+  background-image: url(${ArrowRight});
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 24px;
+  width: 24px;
+  border: none;
+  background-color: ${mainBgColor};
+`;
+const SliderArrowLeft = styled(SliderArrowRight)`
+transform: rotate(180deg);
 `;
 type TSlide = {
   data: TArticle;
@@ -78,9 +93,14 @@ const Slide: FC<TSlide> = ({ data, name, page }) => {
 const BuletBar = styled.div`
         display: flex;
         gap:12px;
-        padding-top:16px;
-        padding-bottom: 12px;
     `;
+const SliderBox = styled.div`
+  display: flex;
+  align-items: baseline;
+  padding-top:16px;
+  width: 100%;
+  justify-content: space-between;
+`;
 
 const Slider: FC = () => {
   const data = useSelector((state) => state.view.topFeed) ?? [];
@@ -90,6 +110,16 @@ const Slider: FC = () => {
     range.push(i);
   }
   const [page, setPage] = useState<number>(0);
+  const onClickRight = () => {
+    if (data && (data.length - 1) > page) {
+      setPage(page + 1);
+    }
+  };
+  const onClickLeft = () => {
+    if (page > 0) {
+      setPage(page - 1);
+    }
+  };
 
   return (
     <SlidersContainer>
@@ -102,8 +132,10 @@ const Slider: FC = () => {
           <Slide key={DataSlide.slug} data={DataSlide} name={index} page={page} />
         ))
       }
-      <BuletBar>
-        {
+      <SliderBox>
+        <SliderArrowLeft onClick={onClickLeft} />
+        <BuletBar>
+          {
           data && range.map((pageSlide) => {
             const isActive = pageSlide === page;
             const onClick: MouseEventHandler = () => {
@@ -114,7 +146,9 @@ const Slider: FC = () => {
             );
           })
         }
-      </BuletBar>
+        </BuletBar>
+        <SliderArrowRight onClick={onClickRight} />
+      </SliderBox>
       <Divider distance={24} />
     </SlidersContainer>
 

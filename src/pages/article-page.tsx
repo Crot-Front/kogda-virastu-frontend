@@ -99,12 +99,13 @@ const RightColumn = styled.aside`
 const ArticlePage: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { commentsFeed: comments } = useSelector((store) => store.view);
+  const { commentsFeed: comments, article } = useSelector((store) => store.view);
   const { isLoggedIn } = useSelector((state) => state.system);
   const intl = useIntl();
   const { slug } = useParams();
   const { isArticleNotFound, isArticleRemoved } = useSelector((state) => state.api);
   const { articles } = useSelector((state) => state.all);
+  const isArticlePublished = article?.state === 'published';
 
   useEffect(() => {
     batch(() => {
@@ -141,17 +142,17 @@ const ArticlePage: FC = () => {
     <ArticleSection>
       <ArticlePageWrapper>
         {!!slug && <Article slug={slug} />}
-        {(isLoggedIn || !!comments?.length) ? (
+        {((isLoggedIn || !!comments?.length) && isArticlePublished) ? (
           <CommentTitle>
             <FormattedMessage id='comments' />
           </CommentTitle>
         ) : null}
-        {!!slug && (
+        {!!slug && isArticlePublished && (
         <CommentInputWrapper>
           <CommentInput slug={slug} />
         </CommentInputWrapper>
         )}
-        {!!slug && <CommentList slug={slug} />}
+        {!!slug && isArticlePublished && <CommentList slug={slug} />}
       </ArticlePageWrapper>
       <RightColumn>
 

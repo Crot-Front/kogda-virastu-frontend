@@ -1,12 +1,29 @@
-import React, { FC, MouseEventHandler } from 'react';
+import React, {
+  FC,
+  MouseEventHandler,
+  useState,
+  useEffect,
+} from 'react';
 import { FormattedDate } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import parse from 'html-react-parser';
 import { useDispatch, useSelector } from '../services/hooks';
 import {
-  addLikeThunk, deleteLikeThunk,
+  addLikeThunk,
+  deleteLikeThunk,
+  publishArticleThunk,
+  getArticleThunk,
+  declineArticleThunk,
+  setPendingArticleThunk,
 } from '../thunks';
-import { DeletePostButton, EditPostButton } from '../ui-lib';
+import {
+  DeletePostButton,
+  EditPostButton,
+  ModerationArticleButtonActions,
+  PublishedButton,
+  SetPendingButton,
+} from '../ui-lib';
 import { openConfirm } from '../store';
 import BarTags from './bar-tags';
 import Likes from './likes';
@@ -18,6 +35,10 @@ type TArticleProps = {
 type TArticleActionsProps = {
   onClickEdit: MouseEventHandler<HTMLButtonElement>;
   onClickDelete: MouseEventHandler<HTMLButtonElement>;
+};
+
+type TPublishedArticleActionsProps = {
+  onClickSetPending: MouseEventHandler<HTMLButtonElement>;
 };
 
 const ArticleContainer = styled.div`
@@ -46,7 +67,7 @@ const ArticleActionsContainer = styled.div`
   flex-flow: row wrap;
   justify-content: space-between;
   && > button {
-    width:233px;
+    // width:233px;
     @media screen  and (max-width:725px) {
       width:175px;
     }
@@ -89,18 +110,33 @@ const ArticleImage = styled.img`
   height: 100%;
 `;
 
-const ArticleBody = styled.p`
-  font-family: ${({ theme: { text18: { family } } }) => family};
-  font-size: ${({ theme: { text18: { size } } }) => size}px ;
-  line-height: ${({ theme: { text18: { height } } }) => height}px;
-  font-weight: ${({ theme: { text18: { weight } } }) => weight};
-  margin: 0;
-  @media screen and (max-width:768px) {
-    font-family: ${({ theme: { text16: { family } } }) => family};
-    font-size: ${({ theme: { text16: { size } } }) => size}px ;
-    line-height: ${({ theme: { text16: { height } } }) => height}px;
-    font-weight: ${({ theme: { text16: { weight } } }) => weight};
- }
+const ArticleBody = styled.div`
+  p {
+    margin: 0;
+    font-family: ${({ theme: { text18: { family } } }) => family};
+    font-size: ${({ theme: { text18: { size } } }) => size}px ;
+    line-height: ${({ theme: { text18: { height } } }) => height}px;
+    font-weight: ${({ theme: { text18: { weight } } }) => weight};
+    @media screen and (max-width:768px) {
+      font-family: ${({ theme: { text16: { family } } }) => family};
+      font-size: ${({ theme: { text16: { size } } }) => size}px ;
+      line-height: ${({ theme: { text16: { height } } }) => height}px;
+      font-weight: ${({ theme: { text16: { weight } } }) => weight}
+    }
+  }
+
+  li {
+      font-family: ${({ theme: { text18: { family } } }) => family};
+      font-size: ${({ theme: { text18: { size } } }) => size}px ;
+      line-height: ${({ theme: { text18: { height } } }) => height}px;
+      font-weight: ${({ theme: { text18: { weight } } }) => weight};
+      @media screen and (max-width:768px) {
+        font-family: ${({ theme: { text16: { family } } }) => family};
+        font-size: ${({ theme: { text16: { size } } }) => size}px ;
+        line-height: ${({ theme: { text16: { height } } }) => height}px;
+        font-weight: ${({ theme: { text16: { weight } } }) => weight}
+      }
+    }
 `;
 
 const ArticleActions: FC<TArticleActionsProps> = ({ onClickEdit, onClickDelete }) => (
@@ -110,13 +146,25 @@ const ArticleActions: FC<TArticleActionsProps> = ({ onClickEdit, onClickDelete }
   </ArticleActionsContainer>
 );
 
+const PublishedArticleActions: FC<TPublishedArticleActionsProps> = ({ onClickSetPending }) => (
+  <ArticleActionsContainer>
+    <PublishedButton />
+    <SetPendingButton onClick={onClickSetPending} />
+  </ArticleActionsContainer>
+);
+
 const Article: FC<TArticleProps> = ({ slug }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [articlePublished, setArticlePublished] = useState(false);
+
   const { article } = useSelector((state) => state.view);
   const currentUser = useSelector((state) => state.profile);
   const isAuthor = article?.author.username === currentUser.username;
+  const pending = article?.state === 'pending';
+  const published = article?.state === 'published';
+  const admin = currentUser?.roles?.filter((role) => role === 'admin').toString();
 
   const onClickDelete = () => {
     if (article) {
@@ -128,6 +176,25 @@ const Article: FC<TArticleProps> = ({ slug }) => {
     if (article && slug) {
       navigate(`/editArticle/${slug}`);
     }
+  };
+
+  const onClickPublish = () => {
+    dispatch(publishArticleThunk(slug));
+    setArticlePublished(true);
+  };
+
+  useEffect(() => {
+    dispatch(getArticleThunk(slug));
+  }, [articlePublished, dispatch, slug]);
+
+  const onClickDecline = () => {
+    dispatch(declineArticleThunk(slug));
+    navigate('/');
+  };
+
+  const onClickSetPending = () => {
+    dispatch(setPendingArticleThunk(slug));
+    navigate('/');
   };
 
   const onClickLike = (ev: React.MouseEvent) => {
@@ -144,8 +211,18 @@ const Article: FC<TArticleProps> = ({ slug }) => {
   }
   return (
     <ArticleContainer>
-      {isAuthor && (
+      {isAuthor && !pending && (
         <ArticleActions onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
+      )}
+      {pending && admin && (
+        <ArticleActionsContainer>
+          <ModerationArticleButtonActions
+            onClickPublish={onClickPublish}
+            onClickDecline={onClickDecline} />
+        </ArticleActionsContainer>
+      )}
+      {published && admin && !isAuthor && (
+        <PublishedArticleActions onClickSetPending={onClickSetPending} />
       )}
       <ArticleTitle>{article.title}</ArticleTitle>
       <ArticleAuthorContainer>
@@ -168,7 +245,7 @@ const Article: FC<TArticleProps> = ({ slug }) => {
       {article.link && (
         <ArticleImage src={article.link} />
       )}
-      <ArticleBody>{article.body}</ArticleBody>
+      <ArticleBody>{parse(article.body ? article.body : '')}</ArticleBody>
       <BarTags tagList={article.tagList} />
     </ArticleContainer>
   );

@@ -1,8 +1,8 @@
 import React, { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { batch } from 'react-redux';
+import styled from 'styled-components';
 import { useDispatch, useSelector } from '../services/hooks';
-
 import { ProfileWidget, FeedRibbon } from '../widgets';
 import {
   getPublicFeedThunk,
@@ -12,6 +12,10 @@ import {
   clearProfileFetchNotFound, clearErrorMessage, clearErrorObject, clearView,
 } from '../store';
 import ProfilePageLayout from '../layouts/profile-page-layout';
+
+const FeedConteiner = styled.div`
+  margin: 0 auto;
+`;
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
@@ -73,9 +77,11 @@ const Profile: FC = () => {
         isUser={isUser}
         size='large'
         distance={0}
-        color='' />
-      <FeedRibbon />
-
+        color=''
+        bio={profile.bio} />
+      <FeedConteiner>
+        <FeedRibbon />
+      </FeedConteiner>
     </ProfilePageLayout>
 
   );

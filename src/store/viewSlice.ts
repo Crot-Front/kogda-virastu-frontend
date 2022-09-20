@@ -19,6 +19,7 @@ type TViewState = {
   feedType: FeedTypes;
   articlesType: UserArticlesTypes;
   topFeed: TArticles | null;
+  tagsFollow: TTags | null;
 };
 
 const initialState: TViewState = {
@@ -36,6 +37,7 @@ const initialState: TViewState = {
   feedType: FeedTypes.public,
   articlesType: UserArticlesTypes.my,
   topFeed: null,
+  tagsFollow: null,
 };
 
 const viewSlice = createSlice({
@@ -117,6 +119,9 @@ const viewSlice = createSlice({
     setArtistProfile: (state, action: PayloadAction<UserArticlesTypes>) => ({
       ...state, articlesType: action.payload,
     }),
+    setTagsFollow: (state, action: PayloadAction<TTags>) => ({
+      ...state, tagsFollow: action.payload,
+    }),
   },
 });
 
@@ -146,6 +151,7 @@ export const {
   setArtistProfile,
   setTopFeed,
   clearTopFeed,
+  setTagsFollow,
 } = viewSlice.actions;
 const viewReducer = viewSlice.reducer;
 export default viewReducer;

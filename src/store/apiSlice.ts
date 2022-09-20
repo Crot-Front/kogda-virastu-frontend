@@ -10,11 +10,16 @@ type TAPIState = {
   isUserLoggingIn: boolean,
   isUserPatching: boolean,
   isPublicFeedFetching: boolean,
+  isPopularPostsRequested: boolean,
+  isPopularPostsSucceeded: boolean,
   isArticleFetching: boolean,
   isArticleNotFound: boolean,
   isPrivateFeedFetching: boolean,
+  isPendingFeedFetching: boolean,
   isArticlePosting: boolean,
   isArticlePostingSucceeded: boolean,
+  isDeclineArticlePosting: boolean,
+  isDeclineArticleSucceeded: boolean,
   isArticleDeleting: boolean,
   isArticleRemoved: boolean,
   isArticlePatching: boolean,
@@ -32,6 +37,14 @@ type TAPIState = {
   isSettingsPatching: boolean,
   isSettingsUpdateSucceeded: boolean,
   isAllPostsRequested: boolean,
+  isTagFollowing: boolean,
+  isTagFollowDeleting: boolean,
+  isTagsFollowFetching: boolean,
+  isInviteFetching: boolean,
+  isVisible: boolean,
+  isAllUsersFetching: boolean,
+  isUserRolesFetching: boolean,
+  isUploadFetching: boolean,
 };
 
 const initialState : TAPIState = {
@@ -43,11 +56,16 @@ const initialState : TAPIState = {
   isUserFetching: false,
   isUserPatching: false,
   isPublicFeedFetching: false,
+  isPopularPostsRequested: false,
+  isPopularPostsSucceeded: false,
   isArticleFetching: false,
   isArticleNotFound: false,
   isPrivateFeedFetching: false,
+  isPendingFeedFetching: false,
   isArticlePosting: false,
   isArticlePostingSucceeded: false,
+  isDeclineArticlePosting: false,
+  isDeclineArticleSucceeded: false,
   isArticleDeleting: false,
   isArticleRemoved: false,
   isArticlePatching: false,
@@ -65,6 +83,14 @@ const initialState : TAPIState = {
   isSettingsPatching: false,
   isSettingsUpdateSucceeded: false,
   isAllPostsRequested: false,
+  isTagFollowing: false,
+  isTagFollowDeleting: false,
+  isTagsFollowFetching: false,
+  isInviteFetching: false,
+  isVisible: false,
+  isAllUsersFetching: false,
+  isUserRolesFetching: false,
+  isUploadFetching: false,
 };
 
 const apiSlice = createSlice({
@@ -158,6 +184,18 @@ const apiSlice = createSlice({
     clearArticleFetchNotFound: (state) => ({
       ...state, isArticleNotFound: false,
     }),
+    popularPostsRequested: (state) => ({
+      ...state, isPopularPostsRequested: true, isPopularPostsSucceeded: false,
+    }),
+    popularPostsRequestSucceeded: (state) => ({
+      ...state, isPopularPostsRequested: false, isPopularPostsSucceeded: true,
+    }),
+    popularPostsRequestFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state,
+      isPopularPostsRequested: false,
+      isPopularPostsSucceeded: false,
+      errorObject: action.payload,
+    }),
     privateFeedRequested: (state) => ({
       ...state, isPrivateFeedFetching: true,
     }),
@@ -167,8 +205,17 @@ const apiSlice = createSlice({
     privateFeedFailed: (state, action: PayloadAction<TAPIError>) => ({
       ...state, isPrivateFeedFetching: false, errorObject: action.payload,
     }),
+    pendingFeedRequested: (state) => ({
+      ...state, isPendingFeedFetching: true,
+    }),
+    pendingFeedSucceeded: (state) => ({
+      ...state, isPendingFeedFetching: false,
+    }),
+    pendingFeedFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isPendingFeedFetching: false, errorObject: action.payload,
+    }),
     articlePostRequested: (state) => ({
-      ...state, isArticlePosting: true, sArticlePostingSucceeded: false,
+      ...state, isArticlePosting: true, isArticlePostingSucceeded: false,
     }),
     articlePostSucceeded: (state) => ({
       ...state, isArticlePosting: false, isArticlePostingSucceeded: true,
@@ -183,6 +230,15 @@ const apiSlice = createSlice({
     }),
     articlePostFailed: (state, action: PayloadAction<TAPIError>) => ({
       ...state, isArticlePosting: false, errorObject: action.payload,
+    }),
+    declineArticleRequested: (state) => ({
+      ...state, isDeclineArticlePosting: true, isDeclineArticleSucceeded: false,
+    }),
+    declineArticleSucceeded: (state) => ({
+      ...state, isDeclineArticlePosting: false, isDeclineArticleSucceeded: true,
+    }),
+    declineArticleFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isDeclineArticlePosting: false, errorObject: action.payload,
     }),
     articleDeleteRequested: (state) => ({
       ...state, isArticleDeleting: true, isArticleRemoved: false,
@@ -320,11 +376,80 @@ const apiSlice = createSlice({
       isSettingsUpdateSucceeded: false,
       errorObject: action.payload,
     }),
+    tagFollowRequested: (state) => ({
+      ...state, isTagFollowing: true,
+    }),
+    tagFollowSucceeded: (state) => ({
+      ...state, isTagFollowing: false,
+    }),
+    tagFollowFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isTagFollowing: false, errorObject: action.payload,
+    }),
+    tagFollowVisible: (state, action: PayloadAction<boolean>) => ({
+      ...state, isVisible: action.payload,
+    }),
+    tagFollowDeleteRequested: (state) => ({
+      ...state, isTagFollowDeleting: true,
+    }),
+    tagFollowDeleteSucceeded: (state) => ({
+      ...state, isTagFollowDeleting: false,
+    }),
+    tagFollowDeleteFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isTagFollowDeleting: false, errorObject: action.payload,
+    }),
+    tagsFollowFetchRequested: (state) => ({
+      ...state, isTagsFollowFetching: true,
+    }),
+    tagsFollowFetchSucceeded: (state) => ({
+      ...state, isTagsFollowFetching: false,
+    }),
+    tagsFollowFetchFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isTagsFollowFetching: false, errorObject: action.payload,
+    }),
+    inviteGetRequested: (state) => ({
+      ...state, isInviteFetching: true,
+    }),
+    inviteGetSucceeded: (state) => ({
+      ...state, isInviteFetching: false,
+    }),
+    inviteGetFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isInviteFetching: false, errorObject: action.payload,
+    }),
+    allUsersFetchRequested: (state) => ({
+      ...state, isAllUsersFetching: true,
+    }),
+    allUsersFetchSucceeded: (state) => ({
+      ...state, isAllUsersFetching: false,
+    }),
+    allUsersFetchFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isAllUsersFetching: false, errorObject: action.payload,
+    }),
+    userRolesFetchRequested: (state) => ({
+      ...state, isUserRolesFetching: true,
+    }),
+    userRolesFetchSucceeded: (state) => ({
+      ...state, isUserRolesFetching: false,
+    }),
+    userRolesFetchFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isUserRolesFetching: false, errorObject: action.payload,
+    }),
+    uploadFetchRequested: (state) => ({
+      ...state, isUploadFetching: true,
+    }),
+    uploadFetchSucceeded: (state) => ({
+      ...state, isUploadFetching: false,
+    }),
+    uploadFetchFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isUploadFetching: false, errorObject: action.payload,
+    }),
   },
 });
 
 const apiReducer = apiSlice.reducer;
 export const {
+  inviteGetRequested,
+  inviteGetSucceeded,
+  inviteGetFailed,
   setSuccessMessage,
   setErrorMessage,
   clearSuccessMessage,
@@ -346,14 +471,23 @@ export const {
   publicFeedRequested,
   publicFeedSucceeded,
   publicFeedFailed,
+  popularPostsRequested,
+  popularPostsRequestSucceeded,
+  popularPostsRequestFailed,
   articleFetchRequested,
   articleFetchSucceeded,
   articleFetchFailed,
   privateFeedRequested,
   privateFeedSucceeded,
   privateFeedFailed,
+  pendingFeedRequested,
+  pendingFeedSucceeded,
+  pendingFeedFailed,
   articlePostRequested,
   articlePostSucceeded,
+  declineArticleRequested,
+  declineArticleSucceeded,
+  declineArticleFailed,
   articlePostFailed,
   articleDeleteRequested,
   articleDeleteSucceeded,
@@ -402,5 +536,25 @@ export const {
   articleDeleteClear,
   articlePatchClear,
   articlePostClear,
+  tagFollowRequested,
+  tagFollowSucceeded,
+  tagFollowFailed,
+  tagFollowDeleteRequested,
+  tagFollowDeleteSucceeded,
+  tagFollowDeleteFailed,
+  tagsFollowFetchRequested,
+  tagsFollowFetchSucceeded,
+  tagsFollowFetchFailed,
+  tagFollowVisible,
+  allUsersFetchRequested,
+  allUsersFetchSucceeded,
+  allUsersFetchFailed,
+  userRolesFetchRequested,
+  userRolesFetchSucceeded,
+  userRolesFetchFailed,
+  uploadFetchRequested,
+  uploadFetchSucceeded,
+  uploadFetchFailed,
 } = apiSlice.actions;
+
 export default apiReducer;

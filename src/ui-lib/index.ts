@@ -23,6 +23,9 @@ import {
 import {
   EditPostButton,
   DeletePostButton,
+  ModerationArticleButtonActions,
+  PublishedButton,
+  SetPendingButton,
   OpenMenuButton,
   FollowButton,
   UnfollowButton,
@@ -35,7 +38,9 @@ import {
   ConfirmDeleteButton,
   MenuNewPostButton,
   MenuSettingsButton,
+  MenuAdminButton,
   MenuLogoutButton,
+  GenerateCodeButton,
 } from './buttons';
 
 import {
@@ -43,11 +48,14 @@ import {
   FieldLogin,
   FieldEmail,
   FieldPassword,
+  FieldConfirmPasswordProfile,
+  FieldConfirmPasswordRegister,
   FieldNameArticle,
   FieldDescriptionArticle,
   FieldTags,
   FieldNick,
   FieldProfileImage,
+  FieldRegistrationCode,
 }
   from './inputs/input-fields';
 import {
@@ -92,6 +100,9 @@ export {
   EyeNoIcon,
   EditPostButton,
   DeletePostButton,
+  ModerationArticleButtonActions,
+  SetPendingButton,
+  PublishedButton,
   OpenMenuButton,
   FollowButton,
   UnfollowButton,
@@ -107,6 +118,8 @@ export {
   FieldLogin,
   FieldEmail,
   FieldPassword,
+  FieldConfirmPasswordProfile,
+  FieldConfirmPasswordRegister,
   FieldNick,
   FieldNameArticle,
   FieldDescriptionArticle,
@@ -123,6 +136,9 @@ export {
   RegularText,
   MenuNewPostButton,
   MenuSettingsButton,
+  MenuAdminButton,
   MenuLogoutButton,
   FieldTextComment,
+  FieldRegistrationCode,
+  GenerateCodeButton,
 };

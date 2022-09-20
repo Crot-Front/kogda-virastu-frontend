@@ -1,8 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import InputField from './input-field-config';
+import { InputField, InputFieldWithUpload } from './input-field-config';
 import { PaperClipIcon, EyeIcon, EyeNoIcon } from '../icons';
 import { TFieldInput } from '../../types/styles.types';
+import { useSelector, useDispatch } from '../../services/hooks';
+import { setPasswordCorrectRegister, setPasswordInCorrectRegister } from '../../store/registerFormSubSlice';
+import { setPasswordCorrectProfile, setPasswordInCorrectProfile } from '../../store/profileFormSubSlice';
 
 export const FieldUrl: FC<TFieldInput> = ({
   value,
@@ -13,10 +16,13 @@ export const FieldUrl: FC<TFieldInput> = ({
   error = false,
   errorText = '',
   disabled = false,
+  onIconClick = undefined,
+  onChangeUpload = undefined,
+  imageRef,
 }) => {
   const intl = useIntl();
   return (
-    <InputField
+    <InputFieldWithUpload
       placeholder={placeholder}
       name='FieldURL'
       type='url'
@@ -28,7 +34,10 @@ export const FieldUrl: FC<TFieldInput> = ({
       onChange={onChange}
       labelText={intl.messages.articleImage as string}
       icon={<PaperClipIcon color='grey' />}
-      disabled={disabled} />
+      onIconClick={onIconClick}
+      disabled={disabled}
+      onChangeUpload={onChangeUpload}
+      imageRef={imageRef} />
   );
 };
 export const FieldProfileImage: FC<TFieldInput> = ({
@@ -40,10 +49,12 @@ export const FieldProfileImage: FC<TFieldInput> = ({
   error = false,
   errorText = '',
   disabled = false,
+  onIconClick = undefined,
+  onChangeUpload = undefined,
 }) => {
   const intl = useIntl();
   return (
-    <InputField
+    <InputFieldWithUpload
       placeholder={placeholder}
       name='FieldProfileImage'
       type='url'
@@ -55,7 +66,9 @@ export const FieldProfileImage: FC<TFieldInput> = ({
       onChange={onChange}
       labelText={intl.messages.urlImage as string}
       icon={<PaperClipIcon color='grey' />}
-      disabled={disabled} />
+      onIconClick={onIconClick}
+      disabled={disabled}
+      onChangeUpload={onChangeUpload} />
   );
 };
 export const FieldLogin: FC<TFieldInput> = ({
@@ -184,6 +197,125 @@ FieldPassword.defaultProps = {
   name: 'FieldPassword',
 };
 
+// Поле для подтверждения пароля
+export const FieldConfirmPasswordRegister: FC<TFieldInput & { label?: string, name?: string }> = ({
+  name = 'FieldConfirmPassword',
+  label = undefined,
+  value,
+  onFocus = undefined,
+  onBlur = undefined,
+  onChange,
+  placeholder = '',
+  error = false,
+  errorText = 'Пароль не совпадает',
+  disabled = false,
+}) => {
+  const {
+    password, confirmPassword, isPasswordCorrect,
+  } = useSelector((state) => state.forms.register);
+  const dispatch = useDispatch();
+  const intl = useIntl();
+  const [confirmPasswordState,
+    setConfirmPassword] = useState<'password' | 'text'>('password');
+  const [passwordIcon, setPasswordIcon] = useState(<EyeNoIcon color='grey' />);
+  const onIconClick = () => {
+    if (confirmPasswordState === 'password') {
+      setConfirmPassword('text');
+      setPasswordIcon(<EyeIcon color='grey' />);
+    } else {
+      setConfirmPassword('password');
+      setPasswordIcon(<EyeNoIcon color='grey' />);
+    }
+  };
+  useEffect(() => {
+    if (password === confirmPassword) {
+      dispatch(setPasswordCorrectRegister());
+    } else {
+      dispatch(setPasswordInCorrectRegister());
+    }
+  }, [password, confirmPassword, dispatch]);
+  return (
+    <InputField
+      placeholder={placeholder}
+      name={name}
+      type={confirmPasswordState}
+      errorText={errorText}
+      error={isPasswordCorrect}
+      onBlur={onBlur}
+      onFocus={onFocus}
+      disabled={disabled}
+      value={value}
+      onChange={onChange}
+      labelText={label || intl.messages.confimPassword as string}
+      icon={passwordIcon}
+      onIconClick={onIconClick} />
+  );
+};
+
+FieldConfirmPasswordRegister.defaultProps = {
+  label: undefined,
+  name: 'FieldConfirmPassword',
+};
+
+export const FieldConfirmPasswordProfile: FC<TFieldInput & { label?: string, name?: string }> = ({
+  name = 'FieldConfirmPassword',
+  label = undefined,
+  value,
+  onFocus = undefined,
+  onBlur = undefined,
+  onChange,
+  placeholder = '',
+  error = false,
+  errorText = 'Пароль не совпадает',
+  disabled = false,
+}) => {
+  const {
+    password, confirmPassword, isPasswordCorrect,
+  } = useSelector((state) => state.forms.profile);
+  const dispatch = useDispatch();
+  const intl = useIntl();
+  const [confirmPasswordState,
+    setConfirmPassword] = useState<'password' | 'text'>('password');
+  const [passwordIcon, setPasswordIcon] = useState(<EyeNoIcon color='grey' />);
+  const onIconClick = () => {
+    if (confirmPasswordState === 'password') {
+      setConfirmPassword('text');
+      setPasswordIcon(<EyeIcon color='grey' />);
+    } else {
+      setConfirmPassword('password');
+      setPasswordIcon(<EyeNoIcon color='grey' />);
+    }
+  };
+  useEffect(() => {
+    if (password === confirmPassword) {
+      dispatch(setPasswordCorrectProfile());
+    } else {
+      dispatch(setPasswordInCorrectProfile());
+    }
+  }, [password, confirmPassword, dispatch]);
+  return (
+    <InputField
+      placeholder={placeholder}
+      name={name}
+      type={confirmPasswordState}
+      errorText={errorText}
+      error={isPasswordCorrect}
+      onBlur={onBlur}
+      onFocus={onFocus}
+      disabled={disabled}
+      value={value}
+      onChange={onChange}
+      labelText={label || intl.messages.confimPassword as string}
+      icon={passwordIcon}
+      onIconClick={onIconClick} />
+  );
+};
+
+FieldConfirmPasswordProfile.defaultProps = {
+  label: undefined,
+  name: 'FieldConfirmPassword',
+};
+
 export const FieldDescriptionArticle: FC<TFieldInput> = ({
   value,
   onFocus = undefined,
@@ -260,5 +392,31 @@ export const FieldTags: FC<TFieldInput> = ({
       onChange={onChange}
       disabled={disabled}
       labelText={intl.messages.tags as string} />
+  );
+};
+export const FieldRegistrationCode: FC<TFieldInput> = ({
+  value,
+  onFocus = undefined,
+  onBlur = undefined,
+  onChange,
+  placeholder = '',
+  error = false,
+  errorText = '',
+  disabled = false,
+}) => {
+  const intl = useIntl();
+  return (
+    <InputField
+      placeholder={placeholder}
+      name='tags'
+      type='text'
+      errorText={errorText}
+      error={error}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      value={value}
+      onChange={onChange}
+      disabled={disabled}
+      labelText={intl.messages.registerCode as string} />
   );
 };

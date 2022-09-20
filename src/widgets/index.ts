@@ -17,6 +17,7 @@ import SettingsForm from './forms/settings-form';
 import ScrollRibbon from './scroll-ribbon';
 import FeedRibbon from './feed-ribbon';
 import Slider from './slider';
+import Preloader from './preloader';
 
 export {
   Author,
@@ -38,4 +39,5 @@ export {
   FeedRibbon,
   CommentList,
   Slider,
+  Preloader,
 };

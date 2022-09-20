@@ -19,6 +19,7 @@ type TProfileWidget = {
   size: TAvatarSizes,
   distance: number,
   color: string,
+  bio: string | undefined
 };
 
 const ProfileContainer = styled.div`
@@ -34,11 +35,28 @@ const ProfileContainer = styled.div`
         margin-top: 48px;
     }
 
-     @media screen and (max-width: 320px) {
-         width:280px;
-         margin-top:40px;
-     }
+    @media screen and (max-width: 320px) {
+        width:280px;
+        margin-top:40px;
+    }
 
+`;
+
+const ProfileBioContainer = styled.p`
+    width: 495px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+    margin: 0;
+    word-break: break-all;
+    @media screen and (max-width:768px) {
+      width: 500px;
+    }
+
+    @media screen and (max-width: 320px) {
+      width: 280px;
+    }
 `;
 
 const ProfileWidgetButton: FC<{
@@ -55,7 +73,6 @@ const ProfileWidgetButton: FC<{
   if (isUser) {
     return null;
   }
-
   return (
     isFollow ? <UnfollowButton onClick={() => dispatch(unfollowProfileThunk())} />
       : <FollowButton onClick={() => dispatch(followProfileThunk())} />
@@ -70,10 +87,12 @@ const ProfileWidget: FC<TProfileWidget> = ({
   size,
   distance,
   color,
+  bio,
 }) => (
   <ProfileContainer>
     <AvatarIcon name={userName ?? ''} image={userImage} size={size} distance={distance} color={color} />
     <HeaderTwoText>{userName}</HeaderTwoText>
+    <ProfileBioContainer>{bio}</ProfileBioContainer>
     <ProfileWidgetButton isUser={isUser} isFollow={isFollow} />
   </ProfileContainer>
 

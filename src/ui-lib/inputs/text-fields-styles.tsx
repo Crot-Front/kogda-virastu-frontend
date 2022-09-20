@@ -1,11 +1,16 @@
+import { string } from 'prop-types';
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
 import { getPropOnCondition } from '../../services/helpers';
+import { TTheme } from '../../types/styles.types';
 
 export interface ITextFieldStyleProps {
   error: boolean;
   minHeight?: number;
 }
+
+// выдает оишбку типизации, но тут все типизированно и нигде нет any.
+// в свойстве color
 
 export const TextFieldStyle = css<ITextFieldStyleProps>`
   box-sizing: border-box;
@@ -17,7 +22,7 @@ export const TextFieldStyle = css<ITextFieldStyleProps>`
   line-height: ${({ theme: { text18: { height } } }) => height}px ;
   font-weight: ${({ theme: { text18: { weight } } }) => weight};
   outline:none;
-  color: ${({ theme: { secondaryText } }) => secondaryText};
+  color: ${({ error, theme: { inputField: { secondaryText, errorColor } } }) => getPropOnCondition(error, secondaryText, errorColor)}; 
   border: 1px solid ${({ error, theme: { inputField: { defaultBorder, errorColor } } }) => (getPropOnCondition(error, defaultBorder, errorColor))};
 
   @media screen and (max-width:768px) {
@@ -51,12 +56,13 @@ font-size: ${({ theme: { labelInput: { size } } }) => `${size}px`} ;
 font-family: ${({ theme: { labelInput: { family } } }) => family};
 line-height: ${({ theme: { labelInput: { height } } }) => `${height}px`} ;
 font-weight: ${({ theme: { labelInput: { weight } } }) => weight};
+align-self: flex-start;
 `;
 
 type TErrorText = {
   errorText: string
 };
 
-export const ErrorText : FC<TErrorText> = ({ errorText }: TErrorText) => (
+export const ErrorText: FC<TErrorText> = ({ errorText }: TErrorText) => (
   <ErrorTextStyle>{errorText}</ErrorTextStyle>
 );

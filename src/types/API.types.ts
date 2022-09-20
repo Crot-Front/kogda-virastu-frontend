@@ -4,14 +4,27 @@ import {
   TAPIArticles,
   TAPIAuth,
   TAPIComment,
-  TAPIComments, TAPIParamsObject, TAPIPatchArticleData,
+  TAPIComments,
+  TAPIParamsObject,
+  TAPIPatchArticleData,
   TAPIProfile,
   TAPITags,
+  TAPIPopularTags,
   TAPIUser,
+  TAPITag,
+  TAPIInvite,
+  TAPIUsers,
+  TAPIRolesData,
+  TAPIUploadImage,
+  TFile,
 } from '../services/api.types';
 
 export interface IRegisterUser {
-  (username: string, email: string, password: string, nickname?: string) : AxiosPromise<TAPIAuth>;
+  (username: string,
+    email: string,
+    password: string,
+    nickname?: string,
+    invite?: string,) : AxiosPromise<TAPIAuth>;
 }
 
 export interface ILoginUser {
@@ -63,6 +76,10 @@ export interface IFetchTags {
   () : AxiosPromise<TAPITags>
 }
 
+export interface IFetchPopularTags {
+  () : AxiosPromise<TAPIPopularTags>
+}
+
 export interface IFetchComments {
   (slug: string) : AxiosPromise<TAPIComments>;
 }
@@ -79,6 +96,26 @@ export interface IProfile {
   (username: string) : AxiosPromise<TAPIProfile | null>
 }
 
+export interface ITag {
+  (tag: string) : AxiosPromise<TAPITag>
+}
+
+export interface IInvite {
+  (): AxiosPromise<TAPIInvite>
+}
+
+export interface IFetchAllUsers {
+  () : AxiosPromise<TAPIUsers>;
+}
+
+export interface IPatchUserRoles {
+  (slug: string, data: TAPIRolesData) : AxiosPromise<TAPIUser>;
+}
+
+export interface IPostImageUpload {
+  (data: TFile) : AxiosPromise<TAPIUploadImage>
+}
+
 export type {
   TAPIArticle,
   TAPIArticles,
@@ -87,4 +124,6 @@ export type {
   TAPIProfile,
   TAPITags,
   TAPIUser,
+  TAPITag,
+  TAPIInvite,
 };

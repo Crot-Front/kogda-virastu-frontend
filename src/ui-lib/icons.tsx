@@ -68,6 +68,7 @@ export const CrossIcon = styled(CrossPic)<TIconProps>`
   width: 24px;
   height: 24px;
   display: block;
+  cursor: pointer;
   margin-right: ${({ distance }) => distance ?? 0}px;
   color: ${({ color }) => color};
   & > path {

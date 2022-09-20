@@ -65,3 +65,66 @@ export const ButtonsWrapper = styled.div`
   flex-direction: column;
   gap: 24px
 `;
+
+export const TagsTitle = styled.p`
+  margin: 30px 0 4px 0;
+  color: ${({ theme }) => theme.secondaryText};
+  font-size: ${({ theme }) => theme.text18.size}px;
+  font-family: ${({ theme }) => theme.text18.family};
+  font-weight: ${({ theme }) => theme.text18.weight};
+  line-height: ${({ theme }) => theme.text18.height}px;
+`;
+
+export const TagsContainer = styled.div`
+  max-width: 508px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 24px;
+  row-gap: 8px;
+  padding-bottom: 24px;
+`;
+
+export const InviteButtonContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+
+  @media(max-width: 320px) {
+    flex-direction: column;
+    gap: 8px;
+  }
+`;
+
+export const InviteCodeText = styled.p`
+word-break: break-all;
+margin: 0 0 0 24px;
+color: ${({ theme }) => theme.secondaryText};
+font-size: ${({ theme }) => theme.text16Sans.size}px;
+font-family: ${({ theme }) => theme.text16Sans.family};
+font-weight: ${({ theme }) => theme.text16Sans.weight};
+line-height: ${({ theme }) => theme.text16Sans.height}px;
+
+:hover {
+  cursor: pointer;
+}
+`;
+
+export const InviteCodeSuccess = styled.div`
+position: absolute;
+padding: 4px 16px;
+display: flex;
+top: -100%; 
+border-radius: 32px;
+left: calc(50% - 140px); 
+background-color: ${({ theme }) => theme.primaryText};
+color: #FFFFFF;
+
+@media(max-width: 320px) {
+  top: -45%;
+}
+`;
+
+export const InviteCodeLink = styled(FormLoginLink)`
+word-break: break-all;
+`;

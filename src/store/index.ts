@@ -18,7 +18,9 @@ import {
   changeUsernameRegister,
   changeEmailRegister,
   changePasswordRegister,
+  changeConfirmPasswordRegister,
   changeNicknameRegister,
+  changeInviteRegister,
   resetFormRegister,
 } from './registerFormSubSlice';
 
@@ -30,6 +32,7 @@ import {
   setNicknameProfile,
   setFormProfile,
   setPasswordProfile,
+  setConfirmPasswordProfile,
   resetFormProfile,
 
 } from './profileFormSubSlice';
@@ -37,15 +40,16 @@ import {
 import {
   setAllArticles,
   setAllArticlesCount,
-  setAllTags,
+  setPopularTags,
   clearArticles,
   clearTags,
   clearAll,
   setAllThemes,
   setAllVocabularies,
+  setPopularArticles,
 } from './allSlice';
 
-import { setUser, clearUser } from './userSlice';
+import { setUser, clearUser, setInviteCode } from './userSlice';
 
 import { setComment, resetComment } from './commentFormSubSlice';
 
@@ -75,6 +79,7 @@ import {
   clearPage,
   setTopFeed,
   clearTopFeed,
+  setTagsFollow,
 } from './viewSlice';
 
 import {
@@ -101,8 +106,14 @@ import {
   privateFeedRequested,
   privateFeedSucceeded,
   privateFeedFailed,
+  pendingFeedRequested,
+  pendingFeedSucceeded,
+  pendingFeedFailed,
   articlePostRequested,
   articlePostSucceeded,
+  declineArticleRequested,
+  declineArticleSucceeded,
+  declineArticleFailed,
   articlePostFailed,
   articleDeleteRequested,
   articleDeleteSucceeded,
@@ -155,6 +166,31 @@ import {
   articleDeleteClear,
   articlePatchClear,
   articlePostClear,
+  tagFollowRequested,
+  tagFollowSucceeded,
+  tagFollowFailed,
+  tagFollowDeleteRequested,
+  tagFollowDeleteSucceeded,
+  tagFollowDeleteFailed,
+  tagsFollowFetchRequested,
+  tagsFollowFetchSucceeded,
+  tagsFollowFetchFailed,
+  inviteGetRequested,
+  inviteGetSucceeded,
+  inviteGetFailed,
+  tagFollowVisible,
+  allUsersFetchRequested,
+  allUsersFetchSucceeded,
+  allUsersFetchFailed,
+  userRolesFetchRequested,
+  userRolesFetchSucceeded,
+  userRolesFetchFailed,
+  uploadFetchRequested,
+  uploadFetchSucceeded,
+  uploadFetchFailed,
+  popularPostsRequested,
+  popularPostsRequestSucceeded,
+  popularPostsRequestFailed,
 } from './apiSlice';
 
 import {
@@ -168,7 +204,13 @@ import {
   closeConfirm,
 } from './systemSlice';
 
+import { setAllUsers } from './adminSlice';
+
 export {
+  setPopularArticles,
+  popularPostsRequested,
+  popularPostsRequestSucceeded,
+  popularPostsRequestFailed,
   setTheme,
   setLanguage,
   setAllThemes,
@@ -189,6 +231,7 @@ export {
   changeUsernameRegister,
   changeEmailRegister,
   changePasswordRegister,
+  changeConfirmPasswordRegister,
   changeNicknameRegister,
   resetFormRegister,
   setUsernameProfile,
@@ -198,10 +241,11 @@ export {
   setImageProfile,
   setFormProfile,
   setPasswordProfile,
+  setConfirmPasswordProfile,
   resetFormProfile,
   setAllArticles,
   setAllArticlesCount,
-  setAllTags,
+  setPopularTags,
   clearArticles,
   clearTags,
   clearAll,
@@ -250,8 +294,14 @@ export {
   privateFeedRequested,
   privateFeedSucceeded,
   privateFeedFailed,
+  pendingFeedRequested,
+  pendingFeedSucceeded,
+  pendingFeedFailed,
   articlePostRequested,
   articlePostSucceeded,
+  declineArticleRequested,
+  declineArticleSucceeded,
+  declineArticleFailed,
   articlePostFailed,
   articleDeleteRequested,
   articleDeleteSucceeded,
@@ -314,4 +364,30 @@ export {
   articleDeleteClear,
   articlePatchClear,
   articlePostClear,
+  tagFollowRequested,
+  tagFollowSucceeded,
+  tagFollowFailed,
+  setTagsFollow,
+  tagFollowDeleteRequested,
+  tagFollowDeleteSucceeded,
+  tagFollowDeleteFailed,
+  tagsFollowFetchRequested,
+  tagsFollowFetchSucceeded,
+  tagsFollowFetchFailed,
+  changeInviteRegister,
+  setInviteCode,
+  inviteGetRequested,
+  inviteGetSucceeded,
+  inviteGetFailed,
+  tagFollowVisible,
+  allUsersFetchRequested,
+  setAllUsers,
+  allUsersFetchSucceeded,
+  allUsersFetchFailed,
+  userRolesFetchRequested,
+  userRolesFetchSucceeded,
+  userRolesFetchFailed,
+  uploadFetchRequested,
+  uploadFetchSucceeded,
+  uploadFetchFailed,
 };

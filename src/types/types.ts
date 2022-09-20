@@ -1,9 +1,17 @@
 export type TUser = {
   email: string;
   username: string;
+  roles?: Array<string>,
   bio?: string;
   image?:string;
   nickname?: string;
+  friendInvite?: string,
+  confirmPassword?: null | string,
+  _id?: string,
+};
+
+export type TUsers = {
+  users: Array<TUser>,
 };
 
 // Исправлено и переименовано по модели данных сервера
@@ -16,6 +24,13 @@ export type TProfile = {
   nickname?: string;
 };
 
+type TPopularTag = {
+  count: number,
+  name: string,
+};
+
+export type TPopularTags = Array<TPopularTag>;
+
 export type TTags = Array<string>;
 
 export type TArticle = {
@@ -27,6 +42,7 @@ export type TArticle = {
   favorited: boolean;
   favoritesCount: number;
   slug: string;
+  state: string;
   tagList: TTags;
   title: string;
   updatedAt: string;
@@ -54,10 +70,14 @@ export type TComments = Array<TComment>;
 export enum FeedTypes {
   public = 'public',
   private = 'private',
+  moderation = 'moderation',
   tags = 'tags',
 }
 export enum UserArticlesTypes {
   my = 'my',
   favorite = 'favorite',
-
 }
+
+export type TTag = string;
+
+export type TInvite = string;

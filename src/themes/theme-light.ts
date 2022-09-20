@@ -61,6 +61,7 @@ const themeLight: TTheme = {
     borderActive: grey,
     disabledInput: paleGrey,
     errorColor: redAccess,
+    secondaryText: greySecondary,
   },
   button: {
     blue: {

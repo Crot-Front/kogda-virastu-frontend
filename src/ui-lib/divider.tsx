@@ -6,6 +6,7 @@ import { TDividerProps } from '../types/styles.types';
 
 const Divider = styled.hr<TDividerProps>`
   width: 100%;
+  align-item: end;
   border-top: 1px solid ${dividerGray};
   padding: 0;
   margin: ${({ distance }) => (distance || 0)}px 0;

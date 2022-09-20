@@ -1,5 +1,5 @@
 import {
-  TArticle, TComment, TProfile, TTags, TUser,
+  TArticle, TComment, TProfile, TTags, TUser, TTag, TInvite, TPopularTags,
 } from '../types/types';
 
 export type TAPINewUser = {
@@ -8,17 +8,21 @@ export type TAPINewUser = {
     email: string;
     password: string;
     nickname?: string;
+    invite?: string;
   }
+  invite: string | undefined
 };
 
 export type TAPIAuth = {
   user: {
     email: string;
     username: string;
+    roles?: Array<string>,
     bio?: string;
     image?: string;
     token: string;
-    nickname: string
+    nickname: string,
+    invite?: string,
   };
 };
 
@@ -75,6 +79,10 @@ export type TAPITags = {
   tags: TTags;
 };
 
+export type TAPIPopularTags = {
+  tags: TPopularTags;
+};
+
 export type TAPIComment = {
   comment: TComment;
 };
@@ -89,7 +97,32 @@ export type TAPIProfile = {
 export type TAPIErrors = {
   [error: string]: string;
 };
+
 export type TAPIError = {
   errors: TAPIErrors;
   statusCode: number;
+};
+
+export type TAPITag = {
+  tag: TTag;
+};
+
+export type TAPIInvite = {
+  code: TInvite;
+};
+
+export type TAPIUsers = {
+  users: Array<TUser>;
+};
+
+export type TAPIRolesData = {
+  roles?: Array<string>;
+};
+
+export type TAPIUploadImage = {
+  url: string;
+}
+
+export type TFile = {
+  file: File
 };
